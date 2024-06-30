@@ -20,6 +20,7 @@ body, html {
   padding: 50px;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
 }
 
 h1 {
@@ -42,4 +43,25 @@ button {
 
 button:hover {
   background: linear-gradient(135deg, #A4508B, #5F0A87);
+}
+
+/* spinner styles*/
+.spinner {
+  border: 8px solid rgba(255, 255, 255, 0.3); /* Light grey */
+  border-top: 8px solid white; /* white */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+.loading-container p {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: white;
 }
