@@ -66,17 +66,23 @@ const PodcastPage: React.FC = () => {
         </div>
       </div>
       <div className="podcast-episodes">
-        {podcast.seasons.map((season) => (
-          <div key={season.id} className="season">
-            <h2>Season {season.number}</h2>
-            {season.episodes.map((episode) => (
-              <div key={episode.id} className="episode">
-                <h3>{episode.title}</h3>
-                <p>{episode.description}</p>
-              </div>
-            ))}
-          </div>
-        ))}
+        {podcast.seasons.map((season) => {
+          console.log('Season ID:', season.id); // Debugging line
+          return (
+            <div key={season.id} className="season">
+              <h2>Season {season.number}</h2>
+              {season.episodes.map((episode) => {
+                console.log('Episode ID:', episode.id); // Debugging line
+                return (
+                  <div key={episode.id} className="episode">
+                    <h3>{episode.title}</h3>
+                    <p>{episode.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
