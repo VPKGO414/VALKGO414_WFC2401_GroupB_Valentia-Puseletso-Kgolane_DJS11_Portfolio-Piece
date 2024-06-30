@@ -27,7 +27,14 @@ const App: React.FC = () => {
     <Router>
       <div className="App">
         {currentPage === 'welcome' && <WelcomePage onSignInClick={handleSignInClick} />}
-        {currentPage === 'loading' && <div className="loading-page"><div className="loading-container">Loading...</div></div>}
+        {currentPage === 'loading' && (
+          <div className="loading-page">
+            <div className="loading-container">
+              <div className="spinner"></div>
+              <p>Loading...</p>
+            </div>
+          </div>
+        )}
         {currentPage === 'sign-in' && <SignInPage onSuccessfulSignIn={handleSuccessfulSignIn} />}
         {currentPage === 'home' && (
           <>
