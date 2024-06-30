@@ -65,3 +65,43 @@ button:hover {
   font-size: 1.2rem;
   color: white;
 }
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  .loading-container{
+     padding: 30px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+
+  button {
+   padding: 8px 16px;
+   font-size: 0.9rem;
+  }
+}
+
+@media (max-width) {
+  .loading-container{
+     padding: 30px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+
+  button {
+   padding: 8px 16px;
+   font-size: 0.9rem;
+  }
+}
+
