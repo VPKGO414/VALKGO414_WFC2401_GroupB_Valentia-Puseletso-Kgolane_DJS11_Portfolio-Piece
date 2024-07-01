@@ -4,48 +4,44 @@ import api from '../services/api';
 import FavoriteEpisodes from '../components/FavoriteEpisodes';
 import '../styles/seasonPage.css';
 
-interface Episode {
+interface Season {
+  id: number;
+  number: number;
+  episodes: Episode[];
+}
+
+interface Show {
   id: number;
   title: string;
-  season: number;
-  audioUrl: string;
   description: string;
+  image: string;
+  seasons: Season[];
 }
 
 interface SeasonPageParams {
   showId: string;
-  seasonNumber: string;
 }
 
 const SeasonPage: React.FC = () => {
-  const { showId, seasonNumber } = useParams<SeasonPageParams>();
-  const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const { showId } = useParams<SeasonPageParams>();
+  const [show, setShow] = useState<Show | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchEpisodes = async () => {
+    const fetchShow = async () => {
       try {
-        const response = await api.get(`/shows/${showId}/seasons/${seasonNumber}/episodes`);
-        setEpisodes(response.data);
+        const response = await api.get(`/id/${showId}`);
+        setShow(response.data);
       } catch (error) {
-        setError('Error fetching episodes.');
+        setError('Error fetching show details.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchEpisodes();
-  }, [showId, seasonNumber]);
-
-  const addToFavorites = (episode: Episode) => {
-    const newFavorite: Episode = {
-      ...episode,
-      showTitle: 'Example Show',
-      addedDate: new Date().toLocaleDateString(),
-    };
-    // Logic to persist favorite in localStorage or backend
-  };
+    fetchShow();
+  }, [showId]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -55,24 +51,27 @@ const SeasonPage: React.FC = () => {
     return <div>{error}</div>;
   }
 
+  if (!show) {
+    return <div>Show not found.</div>;
+  }
+
   return (
     <div className="season-page">
-      <h2>{`Season ${seasonNumber}`}</h2>
-      <div className="episode-list">
-        {episodes.map((episode) => (
-          <div key={episode.id} className="episode-card">
-            <h3>{episode.title}</h3>
-            <audio controls>
-              <source src={episode.audioUrl} type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-            <p>{episode.description}</p>
-            <button onClick={() => addToFavorites(episode)}>Add to Favorites</button>
-          </div>
+      <div className="show-header">
+        <img src={show.image} alt={show.title} />
+        <div className="show-info">
+          <h1>{show.title}</h1>
+          <p>{show.description}</p>
+        </div>
+      </div>
+      <div className="seasons-list">
+        {show.seasons.map((season) => (
+          <Link key={season.id} to={`/shows/${showId}/seasons/${season.number}`}>
+            Season {season.number}
+          </Link>
         ))}
       </div>
-      <Link to={`/shows/${showId}`} className="back-link">Back to Show</Link>
-      <FavoriteEpisodes />
+      <Link to="/" className="back-link">Back to Shows</Link>
     </div>
   );
 };
