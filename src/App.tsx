@@ -1,55 +1,24 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import WelcomePage from './pages/WelcomePage';
-import SignInPage from './pages/SignInPage';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import EpisodePage from './pages/EpisodePage';
+import SeasonPage from './pages/SeasonPage';
 import PodcastPage from './pages/PodcastPage';
-import GenrePage from './pages/GenrePage';
-import NavBar from './components/NavBar';
-import AudioPlayer from './components/AudioPlayer';
-import './styles/App.css';
+import SignInPage from './pages/SignInPage';
+import WelcomePage from './pages/WelcomePage';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState('welcome');
-
-  const handleSignInClick = () => {
-    setCurrentPage('loading');
-    setTimeout(() => {
-      setCurrentPage('sign-in');
-    }, 3000); // 3 seconds delay
-  };
-
-  const handleSuccessfulSignIn = () => {
-    setCurrentPage('home');
-  };
-
   return (
     <Router>
-      <div className="App">
-        {currentPage === 'welcome' && <WelcomePage onSignInClick={handleSignInClick} />}
-        {currentPage === 'loading' && (
-          <div className="loading-page">
-            <div className="loading-container">
-              <div className="spinner"></div>
-              <p>Loading...</p>
-            </div>
-          </div>
-        )}
-        {currentPage === 'sign-in' && <SignInPage onSuccessfulSignIn={handleSuccessfulSignIn} />}
-        {currentPage === 'home' && (
-          <>
-            <NavBar />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/podcast/:id" element={<PodcastPage />} />
-              <Route path="/genre/:id" element={<GenrePage />} />
-              {/* Optional: Redirect to Home for unmatched paths */}
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-            <AudioPlayer />
-          </>
-        )}
-      </div>
+      <Switch>
+        <Route path="/" exact component={WelcomePage} />
+        <Route path="/signin" component={SignInPage} />
+        <Route path="/home" component={HomePage} />
+        <Route path="/podcast/:id" component={PodcastPage} />
+        <Route path="/podcast/:id/seasons/:seasonNumber" component={SeasonPage} />
+        <Route path="/podcast/:id/seasons/:seasonNumber/episodes/:episodeId" component={EpisodePage} />
+      </Switch>
     </Router>
   );
 };
